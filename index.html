@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heardle Pro - Edição Especial</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+</head>
+<body>
+
+    <div class="game-card">
+        <header>
+            <div class="score-badge">Ronda: <span id="roundCount">1</span></div>
+            <i class="fas fa-compact-disc disc-icon"></i>
+            <h1>Mestre eiro musicas</h1>
+        </header>
+
+        <div class="visualizer" id="visualizer">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+
+        <div class="controls">
+            <button id="playBtn" class="main-btn"><i class="fas fa-play"></i></button>
+            <p id="timerDisplay">Tempo: <span>3s</span></p>
+        </div>
+
+        <div class="search-container">
+            <div class="input-wrapper">
+                <input type="text" id="guessInput" placeholder="Nome da música..." autocomplete="off">
+                <ul id="suggestionList" class="dropdown"></ul>
+            </div>
+            <button id="guessBtn">Enviar</button>
+        </div>
+
+        <div id="feedback"></div>
+        <button id="nextBtn" class="next-btn" style="display: none;">Próxima Música <i class="fas fa-forward"></i></button>
+
+        <div id="hintsSection" class="hints-container">
+            <h3>Dicas Desbloqueadas</h3>
+            <div id="hintsList"></div>
+        </div>
+
+        <div class="playlist-stats">
+    <div class="stat-item">
+        <i class="fas fa-check-circle"></i> <span id="countLancadas">0</span> Lançadas
+    </div>
+    <div class="stat-item">
+        <i class="fas fa-times-circle"></i> <span id="countNaoLancadas">0</span> Não Lançadas
+    </div>
+</div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+:root {
+    --primary: #1DB954;
+    --bg: #121212;
+    --card: #181818;
+    --text: #ffffff;
+    --gray: #b3b3b3;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.game-card {
+    background: var(--card);
+    width: 90%;
+    max-width: 450px;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    text-align: center;
+}
+
+header i { color: var(--primary); font-size: 2rem; margin-bottom: 10px; }
+
+/* Visualizador de som fake */
+.visualizer {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    height: 30px;
+    margin: 20px 0;
+}
+.bar { width: 5px; background: var(--primary); border-radius: 10px; animation: bounce 1s infinite; }
+@keyframes bounce { 
+    0%, 100% { height: 10px; } 
+    50% { height: 30px; } 
+}
+
+.main-btn {
+    background: var(--primary);
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.main-btn:hover { transform: scale(1.1); }
+
+/* Sistema de Dropdown */
+.search-container {
+    position: relative;
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.input-wrapper { position: relative; flex-grow: 1; }
+
+input {
+    width: 100%;
+    padding: 12px;
+    background: #282828;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: white;
+    box-sizing: border-box;
+}
+
+input:focus { border-color: var(--primary); outline: none; }
+
+.dropdown {
+    position: absolute;
+    bottom: 100%; /* Aparece acima do input */
+    left: 0;
+    right: 0;
+    background: #282828;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 10;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+}
+
+.dropdown li {
+    padding: 12px;
+    text-align: left;
+    cursor: pointer;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.dropdown li:hover { background: #3e3e3e; }
+
+#guessBtn {
+    background: white;
+    color: black;
+    border: none;
+    padding: 0 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Dicas */
+.hints-container {
+    margin-top: 25px;
+    background: #222;
+    padding: 15px;
+    border-radius: 12px;
+    display: none;
+}
+
+.hint-item {
+    font-size: 0.9rem;
+    color: var(--gray);
+    margin: 5px 0;
+    padding: 5px;
+    border-left: 3px solid var(--primary);
+    text-align: left;
+}
+/* ... (mantenha o CSS anterior e adicione/ajuste estes) ... */
+
+:root {
+    --primary: #1DB954;
+    --bg: #121212;
+    --card: #1c1c1c;
+}
+
+body { background: radial-gradient(circle, #282828 0%, #121212 100%); color: white; font-family: 'Segoe UI', sans-serif; display: flex; height: 100vh; margin: 0; align-items: center; justify-content: center; }
+
+.game-card { background: var(--card); width: 400px; padding: 30px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.8); position: relative; }
+
+.score-badge { position: absolute; top: 20px; right: 20px; background: #333; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; color: var(--primary); border: 1px solid var(--primary); }
+
+.next-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.next-btn:hover { background: #1ed760; transform: scale(1.02); }
+
+/* Estilo para quando a barra está animando */
+.playing .bar { animation: bounce 0.6s infinite; }
+@keyframes bounce { 
+    0%, 100% { height: 10px; } 
+    50% { height: 35px; } 
+}
+
+/* ... (mesmo CSS anterior com este adicional) ... */
+
+.correct-msg { color: #1DB954; font-weight: bold; margin-top: 15px; }
+.wrong-msg { color: #ff4d4d; font-weight: bold; margin-top: 15px; }
+
+.hint-item {
+    font-size: 0.85rem;
+    color: #b3b3b3;
+    margin: 8px 0;
+    padding: 8px;
+    background: #252525;
+    border-left: 3px solid #1DB954;
+    border-radius: 4px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Estilo do botão quando o jogo acaba */
+.main-btn:disabled { background: #444; cursor: not-allowed; }
+
+:root {
+    --primary: #1DB954;
+    --bg: #121212;
+    --card: #1c1c1c;
+    --danger: #ff4d4d;
+}
+
+body {
+    background: radial-gradient(circle, #222 0%, #000 100%);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-card {
+    background: var(--card);
+    width: 380px;
+    padding: 30px;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    text-align: center;
+    position: relative;
+}
+
+.disc-icon { color: var(--primary); font-size: 2.5rem; margin-bottom: 10px; }
+
+.score-badge { position: absolute; top: 20px; right: 20px; color: var(--primary); font-size: 0.8rem; font-weight: bold; }
+
+/* Visualizer */
+.visualizer { display: flex; justify-content: center; gap: 6px; height: 35px; margin: 20px 0; }
+.bar { width: 6px; background: var(--primary); border-radius: 10px; height: 10px; transition: 0.3s; }
+.playing .bar { animation: bounce 0.6s infinite; }
+@keyframes bounce { 0%, 100% { height: 10px; } 50% { height: 35px; } }
+
+.main-btn { background: var(--primary); border: none; width: 65px; height: 65px; border-radius: 50%; color: white; cursor: pointer; font-size: 1.4rem; }
+
+/* Dropdown */
+.search-container { display: flex; gap: 10px; margin-top: 25px; position: relative; }
+.input-wrapper { flex-grow: 1; position: relative; }
+input { width: 100%; padding: 12px; background: #2a2a2a; border: none; border-radius: 8px; color: white; box-sizing: border-box; }
+.dropdown { 
+    position: absolute; bottom: 100%; left: 0; right: 0; background: #333; 
+    border-radius: 8px; margin-bottom: 8px; list-style: none; padding: 0; 
+    max-height: 150px; overflow-y: auto; display: none; z-index: 100;
+}
+.dropdown li { padding: 10px; text-align: left; cursor: pointer; border-bottom: 1px solid #444; }
+.dropdown li:hover { background: var(--primary); }
+
+#guessBtn { background: white; color: black; border: none; padding: 0 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+/* Feedback & Dicas */
+.hints-container { margin-top: 20px; display: none; background: #111; padding: 15px; border-radius: 12px; }
+.hint-item { text-align: left; font-size: 0.85rem; padding: 8px; margin: 5px 0; border-left: 3px solid var(--primary); background: #222; }
+.hint-item span { color: var(--primary); font-weight: bold; margin-right: 5px; }
+
+.next-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; cursor: pointer; }
+
+.playlist-stats {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.stat-item i {
+    margin-right: 5px;
+}
+
+.stat-item:first-child i { color: #1DB954; } /* Verde para lançadas */
+.stat-item:last-child i { color: #ff4d4d; }  /* Vermelho para não lançadas */
