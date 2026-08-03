@@ -29,7 +29,6 @@ body {
 
 header i { color: var(--primary); font-size: 2rem; margin-bottom: 10px; }
 
-/* Visualizador de som fake */
 .visualizer {
     display: flex;
     justify-content: center;
@@ -56,7 +55,6 @@ header i { color: var(--primary); font-size: 2rem; margin-bottom: 10px; }
 }
 .main-btn:hover { transform: scale(1.1); }
 
-/* Sistema de Dropdown */
 .search-container {
     position: relative;
     margin-top: 30px;
@@ -80,7 +78,7 @@ input:focus { border-color: var(--primary); outline: none; }
 
 .dropdown {
     position: absolute;
-    bottom: 100%; /* Aparece acima do input */
+    bottom: 100%; 
     left: 0;
     right: 0;
     background: #282828;
@@ -114,7 +112,6 @@ input:focus { border-color: var(--primary); outline: none; }
     cursor: pointer;
 }
 
-/* Dicas */
 .hints-container {
     margin-top: 25px;
     background: #222;
@@ -131,7 +128,6 @@ input:focus { border-color: var(--primary); outline: none; }
     border-left: 3px solid var(--primary);
     text-align: left;
 }
-/* ... (mantenha o CSS anterior e adicione/ajuste estes) ... */
 
 :root {
     --primary: #1DB954;
@@ -161,14 +157,12 @@ body { background: radial-gradient(circle, #282828 0%, #121212 100%); color: whi
 
 .next-btn:hover { background: #1ed760; transform: scale(1.02); }
 
-/* Estilo para quando a barra está animando */
 .playing .bar { animation: bounce 0.6s infinite; }
 @keyframes bounce { 
     0%, 100% { height: 10px; } 
     50% { height: 35px; } 
 }
 
-/* ... (mesmo CSS anterior com este adicional) ... */
 
 .correct-msg { color: #1DB954; font-weight: bold; margin-top: 15px; }
 .wrong-msg { color: #ff4d4d; font-weight: bold; margin-top: 15px; }
@@ -186,7 +180,6 @@ body { background: radial-gradient(circle, #282828 0%, #121212 100%); color: whi
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Estilo do botão quando o jogo acaba */
 .main-btn:disabled { background: #444; cursor: not-allowed; }
 
 :root {
@@ -221,7 +214,7 @@ body {
 
 .score-badge { position: absolute; top: 20px; right: 20px; color: var(--primary); font-size: 0.8rem; font-weight: bold; }
 
-/* Visualizer */
+
 .visualizer { display: flex; justify-content: center; gap: 6px; height: 35px; margin: 20px 0; }
 .bar { width: 6px; background: var(--primary); border-radius: 10px; height: 10px; transition: 0.3s; }
 .playing .bar { animation: bounce 0.6s infinite; }
@@ -229,7 +222,7 @@ body {
 
 .main-btn { background: var(--primary); border: none; width: 65px; height: 65px; border-radius: 50%; color: white; cursor: pointer; font-size: 1.4rem; }
 
-/* Dropdown */
+
 .search-container { display: flex; gap: 10px; margin-top: 25px; position: relative; }
 .input-wrapper { flex-grow: 1; position: relative; }
 input { width: 100%; padding: 12px; background: #2a2a2a; border: none; border-radius: 8px; color: white; box-sizing: border-box; }
@@ -243,7 +236,7 @@ input { width: 100%; padding: 12px; background: #2a2a2a; border: none; border-ra
 
 #guessBtn { background: white; color: black; border: none; padding: 0 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-/* Feedback & Dicas */
+
 .hints-container { margin-top: 20px; display: none; background: #111; padding: 15px; border-radius: 12px; }
 .hint-item { text-align: left; font-size: 0.85rem; padding: 8px; margin: 5px 0; border-left: 3px solid var(--primary); background: #222; }
 .hint-item span { color: var(--primary); font-weight: bold; margin-right: 5px; }
@@ -264,5 +257,5 @@ input { width: 100%; padding: 12px; background: #2a2a2a; border: none; border-ra
     margin-right: 5px;
 }
 
-.stat-item:first-child i { color: #1DB954; } /* Verde para lançadas */
-.stat-item:last-child i { color: #ff4d4d; }  /* Vermelho para não lançadas */
+.stat-item:first-child i { color: #1DB954; }
+

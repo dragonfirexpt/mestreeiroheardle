@@ -1,38 +1,38 @@
 const playlist = [
     { 
-        nome: "blica de ouro 2", 
+        nome: "Blica de ouro 2", 
         arquivo: "musicas/blica de ouro 2.mp3", 
-        status: "Não Lançada", // Substituindo o ano por status
+        status: "Não Lançada",
         feat: "Nenhum", 
         album: "Nenhum" 
     },
     { 
-        nome: "Contrato", 
+        nome: "Contrato (feat. Patrícia Malícia)", 
         arquivo: "musicas/Contrato (feat. Patrícia Malícia).mp3", 
         status: "Não Lançada", 
         feat: "Patrícia Malícia", 
         album: "Nenhum" 
     },
     { 
-        nome: "dia ensolarado", 
+        nome: "Dia Ensolarado (feat. Patrícia Malícia & Drezin)", 
         arquivo: "musicas/dia ensolarado.mp3", 
         status: "Não Lançada", 
         feat: "Patrícia Malícia & Drezin", 
         album: "Nenhum" 
     },
      { 
-        nome: "Fanta", 
+        nome: "Fanta (feat. Afonso Jesus)", 
         arquivo: "musicas/fanta feat afonso jesus pre mix.mp3", 
         status: "Lançada", 
         feat: "Afonso Jesus", 
         album: "CAOS DO EIRÓ" 
     },
     { 
-        nome: "Jogador da Bola", 
+        nome: "Jogador da Bola (feat. Patrícia Malícia)", 
         arquivo: "musicas/jogador da bola (feat. patricia malicia) v4.mp3", 
-        status: "Não Lançada", 
+        status: "Lançada", 
         feat: "Patrícia Malícia", 
-        album: "Nenhum" 
+        album: "Sons e merdas assim" 
     },
      { 
         nome: "Louis Vuitton", 
@@ -42,11 +42,11 @@ const playlist = [
         album: "Nenhum" 
     },
       { 
-        nome: "Boca Doce", 
+        nome: "Boca Doce (feat. Pedradas)", 
         arquivo: "musicas/mestre eiro x pedradas.mp3", 
-        status: "Não Lançada", 
+        status: "Lançada", 
         feat: "Pedradas", 
-        album: "Nenhum" 
+        album: "Sons e merdas assim" 
     },
      { 
         nome: "Roisana v2", 
@@ -58,9 +58,9 @@ const playlist = [
      { 
         nome: "SWAG", 
         arquivo: "musicas/swag v3.mp3", 
-        status: "Não Lançada", 
+        status: "Lançada", 
         feat: "Nenhum", 
-        album: "Nenhum" 
+        album: "Sons e merdas assim" 
     },
      { 
         nome: "Horta", 
@@ -70,7 +70,7 @@ const playlist = [
         album: "CAOS DO EIRÓ" 
     },
      { 
-        nome: "Zaza", 
+        nome: "Zaza (feat. Pedradas)", 
         arquivo: "musicas/zaZA pre mix.mp3", 
         status: "Lançada", 
         feat: "Pedradas", 
@@ -84,14 +84,14 @@ const playlist = [
         album: "CAOS DO EIRÓ" 
     },
      { 
-        nome: "Mesmo Assim", 
+        nome: "Mesmo Assim (feat. Drezin)", 
         arquivo: "musicas/Mesmo Assim (feat. Drezin).mp3", 
         status: "Lançada", 
         feat: "Drezin", 
         album: "CAOS DO EIRÓ" 
     },
      { 
-        nome: "Natal Freestyle", 
+        nome: "Natal Freestyle (feat. Drezin)", 
         arquivo: "musicas/Natal Freestyle (feat. Drezin).mp3", 
         status: "Não Lançada", 
         feat: "Drezin", 
@@ -119,7 +119,7 @@ const playlist = [
         album: "Nenhum" 
     },
      { 
-        nome: "Dinheiro nas Calças", 
+        nome: "Dinheiro nas Calças (feat. Drezin)", 
         arquivo: "musicas/Dinheiro nas Calças (feat. Drezin).mp3", 
         status: "Lançada", 
         feat: "Drezin", 
@@ -147,7 +147,7 @@ const playlist = [
         album: "Nenhum" 
     },
      { 
-        nome: "Homem do Momento (feat. Pedrão Canhão)", 
+        nome: "Homem do Momento (feat. Pedradas)", 
         arquivo: "musicas/Homem do Momento (feat. Pedrão Canhão).mp3", 
         status: "Lançada", 
         feat: "Pedrão Canhão", 
@@ -161,28 +161,28 @@ const playlist = [
         album: "Só Sei Dizer Merda" 
     },
       { 
-        nome: "Cartaz", 
+        nome: "Cartaz (feat. Pedradas & Drezin)", 
         arquivo: "musicas/Cartaz (feat. Pedrão Canhão & Drezin).mp3", 
         status: "Não Lançada", 
         feat: "Pedrão Canhão & Drezin", 
         album: "Nenhum" 
     },
       { 
-        nome: "Vida Desgraçada", 
+        nome: "Vida Desgraçada (feat. Drezin & Patrícia Malícia)", 
         arquivo: "musicas/Casa da Porra (feat. Drezin & Patrícia Malícia).mp3", 
         status: "Lançada", 
         feat: "Drezin & Patrícia Malícia", 
         album: "Só Sei Dizer Merda" 
     },
       { 
-        nome: "Diss Quim", 
+        nome: "Diss Quim (feat. Drezin)", 
         arquivo: "musicas/Diss Quim (feat. Drezin).mp3", 
         status: "Não Lançada", 
         feat: "Drezin", 
         album: "Nenhum" 
     },
         { 
-        nome: "Droga Vazada", 
+        nome: "Droga Vazada (feat. Patrícia Malícia)", 
         arquivo: "musicas/Droga Vazada (feat. Patrícia Malícia).mp3", 
         status: "Lançada", 
         feat: "Patrícia Malícia", 
@@ -196,7 +196,7 @@ const playlist = [
         album: "Nenhum" 
     },
       { 
-        nome: "Barras e Barras", 
+        nome: "Barras e Barras (feat. Patrícia Malícia)", 
         arquivo: "musicas/Bistecone (feat. Patrícia Malícia).mp3", 
         status: "Lançada", 
         feat: "Patrícia Malícia", 
@@ -210,14 +210,14 @@ const playlist = [
         album: "Nenhum" 
     },
      { 
-        nome: "Safada", 
+        nome: "Safada (feat. Pedradas)", 
         arquivo: "musicas/Safada (feat. Pedrão Canhão).mp3", 
         status: "Lançada", 
         feat: "Pedrão Canhão", 
         album: "Só Sei Dizer Merda" 
     },
       { 
-        nome: "Bagdá", 
+        nome: "Bagdá (feat. Patrícia Malícia)", 
         arquivo: "musicas/MESTRE EIRÓ - BAGDÁ (FEAT. PATRÍCIA MALÍCIA).mp3", 
         status: "Lançada", 
         feat: "Patricia Malícia", 
@@ -229,7 +229,92 @@ const playlist = [
         status: "Não Lançada", 
         feat: "Nenhum", 
         album: "Nenhum" 
-    }
+    },
+      { 
+        nome: "Fome Freestyle", 
+        arquivo: "musicas/Fome Freestyle.mp3", 
+        status: "Não Lançada", 
+        feat: "Nenhum", 
+        album: "Nenhum" 
+    },
+      { 
+        nome: "Tyler Freestyle", 
+        arquivo: "musicas/Tyler Freestyle.mp3", 
+        status: "Não Lançada", 
+        feat: "Nenhum", 
+        album: "Nenhum" 
+    },
+      { 
+        nome: "Blica de ouro", 
+        arquivo: "musicas/blica de ouro.mp3", 
+        status: "Não Lançada", 
+        feat: "Nenhum", 
+        album: "Nenhum" 
+    },
+      { 
+        nome: "roisana v3", 
+        arquivo: "musicas/roisana v3.mp3", 
+        status: "Não Lançada", 
+        feat: "Nenhum", 
+        album: "Nenhum" 
+    },
+      { 
+        nome: "Por cima de mim", 
+        arquivo: "musicas/por cima de mim.mp3", 
+        status: "Não Lançada", 
+        feat: "Nenhum", 
+        album: "Nenhum" 
+    },
+      { 
+        nome: "Fortuna", 
+        arquivo: "musicas/Fortuna.mp3", 
+        status: "Lançada", 
+        feat: "Nenhum", 
+        album: "Sons e merdas assim" 
+    },
+    { 
+        nome: "Bem Saúde", 
+        arquivo: "musicas/bemsaude.mp3", 
+        status: "Não Lançada", 
+        feat: "Nenhum", 
+        album: "Nenhum" 
+    },
+    { 
+        nome: "Larica", 
+        arquivo: "musicas/larica.mp3", 
+        status: "Não Lançada", 
+        feat: "Mc China", 
+        album: "Nenhum" 
+    },
+    { 
+        nome: "Metanfetamina", 
+        arquivo: "musicas/metanfetamina.mp3", 
+        status: "Lançada", 
+        feat: "Nenhum", 
+        album: "Sons e merdas assim" 
+    },
+    { 
+        nome: "Esbanjo", 
+        arquivo: "musicas/esbanjo.mp3", 
+        status: "Lançada", 
+        feat: "Nenhum", 
+        album: "Sons e merdas assim" 
+    },
+    { 
+        nome: "Japão", 
+        arquivo: "musicas/japao.mp3", 
+        status: "Lançada", 
+        feat: "Nenhum", 
+        album: "Sons e merdas assim" 
+    },
+    { 
+        nome: "Droga pa comprar", 
+        arquivo: "musicas/drogapacomprar.mp3", 
+        status: "Não Lançada", 
+        feat: "Nenhum", 
+        album: "Nenhum" 
+    },
+    
 ];
 
 let musicaAtual = null;
@@ -274,7 +359,6 @@ function rondaHTMLUpdate() {
     document.getElementById('timerDisplay').querySelector('span').innerText = "3s";
 }
 
-// Tocar trecho
 document.getElementById('playBtn').addEventListener('click', () => {
     audio.currentTime = tempoInicioAleatorio;
     audio.play();
@@ -285,7 +369,6 @@ document.getElementById('playBtn').addEventListener('click', () => {
     }, tempoLiberado * 1000);
 });
 
-// Autocomplete
 guessInput.addEventListener('input', () => {
     const termo = guessInput.value.toLowerCase();
     suggestionList.innerHTML = "";
@@ -303,7 +386,6 @@ guessInput.addEventListener('input', () => {
     }
 });
 
-// Verificação
 document.getElementById('guessBtn').addEventListener('click', () => {
     const palpite = guessInput.value.trim();
     if (palpite.toLowerCase() === musicaAtual.nome.toLowerCase()) {
@@ -327,7 +409,6 @@ function atualizarStats() {
 function processarErro() {
     erros++;
     
-    // Se errou após a 3ª dica (Álbum), ele perde
     if (erros > 3) {
         perder();
         return;
@@ -363,7 +444,7 @@ function finalizar(vitoria) {
     nextBtn.style.display = "block";
     suggestionList.style.display = "none";
     audio.currentTime = tempoInicioAleatorio;
-    audio.play(); // Toca a música inteira no final
+    audio.play();
 }
 
 nextBtn.addEventListener('click', () => {
@@ -372,7 +453,7 @@ nextBtn.addEventListener('click', () => {
     configurarNovaRonda();
 });
 
-// Fechar dropdown
+
 document.addEventListener('click', (e) => {
     if (!guessInput.contains(e.target)) suggestionList.style.display = "none";
 });
