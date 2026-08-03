@@ -422,7 +422,7 @@ socket.on('new_round', data => {
 socket.on('update_scores', data => {
     document.getElementById('scoreP1').innerText = data.players[0].score;
     document.getElementById('scoreP2').innerText = data.players[1].score;
-    document.getElementById('feedback').innerHTML = `<p style="color:var(--primary)">${data.winner} foi mais rápido!</p>`;
+    document.getElementById('feedback').innerHTML = `<p style="color:var(--primary)">${data.winner} acertou!</p>`;
 });
 
 socket.on('game_over', p => {
