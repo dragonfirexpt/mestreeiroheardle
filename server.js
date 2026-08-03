@@ -4,15 +4,15 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// 1. Serve os arquivos estáticos primeiro
+// 1. Servir arquivos estáticos (CSS, JS, Músicas)
 app.use(express.static(path.join(__dirname, '.')));
 
-// 2. Rota de captura (ajustada para a nova sintaxe)
-// Mudamos de '*' para '/*' ou usamos uma regex para evitar o erro do path-to-regexp
-app.get('/*', (req, res) => {
+// 2. Rota Curinga (Sintaxe para Express 5.0+)
+// O ":slug" dá um nome ao parâmetro, e o "*" diz que pode ser qualquer coisa.
+app.get('/:slug*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor do Mestre Eiro rodando na porta ${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
