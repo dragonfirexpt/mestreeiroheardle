@@ -8,7 +8,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
 </head>
 <body>
+<!-- Adicione antes do .game-card -->
+<div id="auth-container" class="auth-box">
+    <h2>Mestre Eiro Music</h2>
+    <div id="login-form">
+        <input type="text" id="loginUser" placeholder="Usuário">
+        <input type="password" id="loginPass" placeholder="Senha">
+        <button onclick="login()">Entrar</button>
+        <p>Não tem conta? <a href="#" onclick="toggleAuth()">Registrar</a></p>
+    </div>
+    
+    <div id="register-form" style="display:none;">
+        <input type="text" id="regUser" placeholder="Novo Usuário">
+        <input type="password" id="regPass" placeholder="Senha">
+        <label>Foto de Perfil:</label>
+        <input type="file" id="regAvatar" accept="image/*">
+        <button onclick="register()">Criar Conta</button>
+        <p>Já tem conta? <a href="#" onclick="toggleAuth()">Login</a></p>
+    </div>
+</div>
 
+<!-- Dentro do .game-card (Esconda-o por padrão) -->
+<div class="game-card" id="game-container" style="display: none;">
+    <div class="user-profile">
+        <img id="userAvatar" src="" alt="Avatar">
+        <span id="userName"></span>
+        <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+    </div>
+    <!-- ... resto do seu jogo ... -->
+</div>
     <div class="game-card">
         <header>
             <div class="score-badge">Ronda: <span id="roundCount">1</span></div>

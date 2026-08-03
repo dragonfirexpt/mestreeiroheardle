@@ -1,3 +1,15 @@
+async function checkAuth() {
+    const res = await fetch('/api/me');
+    if (res.ok) {
+        const user = await res.json();
+        document.getElementById('auth-container').style.display = 'none';
+        document.getElementById('game-container').style.display = 'block';
+        document.getElementById('userName').innerText = user.username;
+        document.getElementById('userAvatar').src = user.avatar;
+    }
+}
+checkAuth();
+
 const playlist = [
     { 
         nome: "Blica de ouro 2", 
@@ -457,3 +469,40 @@ nextBtn.addEventListener('click', () => {
 document.addEventListener('click', (e) => {
     if (!guessInput.contains(e.target)) suggestionList.style.display = "none";
 });
+
+async function login() {
+    const username = document.getElementById('loginUser').value;
+    const password = document.getElementById('loginPass').value;
+    const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username, password})
+    });
+    if (res.ok) checkAuth();
+    else alert("Usuário ou senha errados!");
+}
+
+async function register() {
+    const formData = new FormData();
+    formData.append('username', document.getElementById('regUser').value);
+    formData.append('password', document.getElementById('regPass').value);
+    formData.append('avatar', document.getElementById('regAvatar').files[0]);
+
+    const res = await fetch('/api/register', { method: 'POST', body: formData });
+    if (res.ok) {
+        alert("Conta criada! Faça login.");
+        toggleAuth();
+    } else alert("Erro ao registrar!");
+}
+
+async function logout() {
+    await fetch('/api/logout', { method: 'POST' });
+    location.reload();
+}
+
+function toggleAuth() {
+    const log = document.getElementById('login-form');
+    const reg = document.getElementById('register-form');
+    log.style.display = log.style.display === 'none' ? 'block' : 'none';
+    reg.style.display = reg.style.display === 'none' ? 'block' : 'none';
+}
