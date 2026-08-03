@@ -125,11 +125,18 @@ io.on('connection', (socket) => {
     });
 
     function enviarNovaRonda(roomId) {
-        const room = rooms[roomId];
-        if (!room) return;
-        room.musicaIndex = Math.floor(Math.random() * 45); // Ajuste conforme tamanho da playlist
-        io.to(roomId).emit('new_round', { index: room.musicaIndex, ronda: room.rondaAtual });
-    }
+    const room = rooms[roomId];
+    if (!room) return;
+
+    // Usamos um número grande e o cliente faz o % (resto da divisão) 
+    // com o tamanho da playlist dele. Assim nunca dá erro de "undefined"
+    room.musicaIndex = Math.floor(Math.random() * 1000); 
+    
+    io.to(roomId).emit('new_round', { 
+        index: room.musicaIndex, 
+        ronda: room.rondaAtual 
+    });
+}
 });
 
 // Fallback

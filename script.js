@@ -385,9 +385,15 @@ async function logout() {
 
 // --- LÓGICA DE MULTIPLAYER ---
 
-function createRoom() { socket.emit('create_room', { username: myName }); }
+function createRoom() { 
+    socket.emit('create_room', { username: myName }); 
+}
 function joinRoom() { 
     const code = document.getElementById('roomInput').value.toUpperCase();
+    if (!code) return alert("Digita o código!");
+    
+    // CORREÇÃO: Guardar o ID da sala IMEDIATAMENTE no convidado
+    currentRoom = code; 
     socket.emit('join_room', { roomId: code, username: myName }); 
 }
 function startMultiGame() { socket.emit('start_game', currentRoom); }
@@ -400,22 +406,34 @@ socket.on('room_created', id => {
 });
 
 socket.on('player_joined', p => {
-    currentRoom = document.getElementById('displayRoomCode').innerText || currentRoom;
+    // Garantir que ambos têm o código visualmente
+    document.getElementById('displayRoomCode').innerText = currentRoom;
     document.getElementById('waiting-room').style.display = 'block';
+    
+    // Atribuir nomes aos slots
     document.getElementById('p1').innerText = p[0].name;
-    document.getElementById('p2').innerText = p[1] ? p[1].name : "...";
-    if(p.length === 2 && p[0].id === socket.id) document.getElementById('startMultiBtn').style.display = 'block';
+    if (p[1]) {
+        document.getElementById('p2').innerText = p[1].name;
+        // Se eu sou o dono da sala (p1), mostro o botão começar
+        if(p[0].id === socket.id) {
+            document.getElementById('startMultiBtn').style.display = 'block';
+        }
+    }
 });
-
 socket.on('new_round', data => {
     isMulti = true;
     ronda = data.ronda;
+    
+    // CORREÇÃO: Usar o index enviado pelo servidor para garantir a mesma música
+    // Importante: a playlist tem de ser IGUAL nos dois navegadores
     musicaAtual = playlist[data.index % playlist.length];
+    
     document.getElementById('multiplayer-lobby').style.display = 'none';
     document.getElementById('multiplayer-chat').style.display = 'block';
     document.getElementById('duel-score').style.display = 'flex';
     document.getElementById('nameP1').innerText = document.getElementById('p1').innerText;
     document.getElementById('nameP2').innerText = document.getElementById('p2').innerText;
+    
     resetRondaUI();
 });
 
