@@ -4,12 +4,12 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// 1. Servir arquivos estáticos (CSS, JS, Músicas)
+// 1. Primeiro, tenta servir os arquivos que existem (HTML, CSS, JS, MP3)
 app.use(express.static(path.join(__dirname, '.')));
 
-// 2. Rota Curinga (Sintaxe para Express 5.0+)
-// O ":slug" dá um nome ao parâmetro, e o "*" diz que pode ser qualquer coisa.
-app.get('/:slug*', (req, res) => {
+// 2. Se o Express não encontrou o arquivo acima, ele cairá neste "middleware"
+// Isso substitui o app.get('*') e evita o erro do path-to-regexp
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
