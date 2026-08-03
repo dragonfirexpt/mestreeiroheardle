@@ -1,15 +1,6 @@
-async function checkAuth() {
-    const res = await fetch('/api/me');
-    if (res.ok) {
-        const user = await res.json();
-        document.getElementById('auth-container').style.display = 'none';
-        document.getElementById('game-container').style.display = 'block';
-        document.getElementById('userName').innerText = user.username;
-        document.getElementById('userAvatar').src = user.avatar;
-    }
-}
-checkAuth();
-
+const socket = io();
+let myName = "", myAvatar = "", currentRoom = null, isMulti = false;
+let ronda = 1, erros = 0, musicaAtual = null, tempoLiberado = 3, tempoInicioAleatorio = 0;
 const playlist = [
     { 
         nome: "Blica de ouro 2", 
@@ -328,147 +319,34 @@ const playlist = [
     },
     
 ];
-
-let musicaAtual = null;
-let tempoLiberado = 3;
-let erros = 0;
-let tempoInicioAleatorio = 0;
-let ronda = 1;
-
 const audio = document.getElementById('audioPlayer');
-const guessInput = document.getElementById('guessInput');
-const suggestionList = document.getElementById('suggestionList');
-const feedback = document.getElementById('feedback');
-const nextBtn = document.getElementById('nextBtn');
-const hintsList = document.getElementById('hintsList');
-const visualizer = document.getElementById('visualizer');
 
-atualizarStats();
-configurarNovaRonda();
+// --- SISTEMA DE AUTENTICAÇÃO ---
 
-function configurarNovaRonda() {
-    erros = 0;
-    tempoLiberado = 3;
-    rondaHTMLUpdate();
-    
-    musicaAtual = playlist[Math.floor(Math.random() * playlist.length)];
-    audio.src = musicaAtual.arquivo;
-
-    audio.onloadedmetadata = function() {
-        const margem = audio.duration > 20 ? 15 : 2;
-        tempoInicioAleatorio = Math.random() * (audio.duration - margem);
-    };
+async function checkAuth() {
+    try {
+        const res = await fetch('/api/me');
+        if (res.ok) {
+            const user = await res.json();
+            myName = user.username;
+            myAvatar = user.avatar;
+            
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'flex';
+            document.getElementById('main-nav').style.display = 'flex';
+            
+            document.getElementById('userName').innerText = myName;
+            document.getElementById('userAvatar').src = myAvatar;
+            
+            if(!isMulti) configurarNovaRonda();
+        } else {
+            document.getElementById('auth-screen').style.display = 'flex';
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('main-nav').style.display = 'none';
+        }
+    } catch (e) { console.error("Erro auth"); }
 }
-
-function rondaHTMLUpdate() {
-    feedback.innerHTML = "";
-    hintsList.innerHTML = "";
-    document.getElementById('hintsSection').style.display = "none";
-    document.getElementById('guessBtn').disabled = false;
-    nextBtn.style.display = "none";
-    guessInput.value = "";
-    document.getElementById('roundCount').innerText = ronda;
-    document.getElementById('timerDisplay').querySelector('span').innerText = "3s";
-}
-
-document.getElementById('playBtn').addEventListener('click', () => {
-    audio.currentTime = tempoInicioAleatorio;
-    audio.play();
-    visualizer.classList.add('playing');
-    setTimeout(() => {
-        audio.pause();
-        visualizer.classList.remove('playing');
-    }, tempoLiberado * 1000);
-});
-
-guessInput.addEventListener('input', () => {
-    const termo = guessInput.value.toLowerCase();
-    suggestionList.innerHTML = "";
-    if (termo.length > 0) {
-        const filtradas = playlist.filter(m => m.nome.toLowerCase().includes(termo));
-        filtradas.forEach(m => {
-            const li = document.createElement('li');
-            li.textContent = m.nome;
-            li.onclick = () => { guessInput.value = m.nome; suggestionList.style.display = "none"; };
-            suggestionList.appendChild(li);
-        });
-        suggestionList.style.display = filtradas.length ? "block" : "none";
-    } else {
-        suggestionList.style.display = "none";
-    }
-});
-
-document.getElementById('guessBtn').addEventListener('click', () => {
-    const palpite = guessInput.value.trim();
-    if (palpite.toLowerCase() === musicaAtual.nome.toLowerCase()) {
-        vencer();
-    } else {
-        processarErro();
-    }
-});
-
-function vencer() {
-    feedback.innerHTML = `<p style="color: #1DB954; font-weight: bold;">Acertou! A música era ${musicaAtual.nome}</p>`;
-    finalizar(true);
-}
-function atualizarStats() {
-    const lancadas = playlist.filter(m => m.status === "Lançada").length;
-    const naoLancadas = playlist.filter(m => m.status === "Não Lançada").length;
-
-    document.getElementById('countLancadas').innerText = lancadas;
-    document.getElementById('countNaoLancadas').innerText = naoLancadas;
-}
-function processarErro() {
-    erros++;
-    
-    if (erros > 3) {
-        perder();
-        return;
-    }
-
-    tempoLiberado += 3;
-    document.getElementById('timerDisplay').querySelector('span').innerText = tempoLiberado + "s";
-    document.getElementById('hintsSection').style.display = "block";
-    
-    const dica = document.createElement('div');
-    dica.className = "hint-item";
-
-    if (erros === 1) {
-        dica.innerHTML = `<span>Dica 1:</span> ${musicaAtual.status}`;
-    } else if (erros === 2) {
-        dica.innerHTML = `<span>Dica 2 (Feat):</span> ${musicaAtual.feat}`;
-    } else if (erros === 3) {
-        dica.innerHTML = `<span>Dica 3 (Álbum):</span> ${musicaAtual.album}`;
-    }
-
-    hintsList.appendChild(dica);
-    guessInput.value = "";
-    feedback.innerHTML = `<span style="color: #ffb142">Errado! Mais tempo liberado.</span>`;
-}
-
-function perder() {
-    feedback.innerHTML = `<p style="color: #ff4d4d; font-weight: bold;">perdeste bot<br>A música era: ${musicaAtual.nome}</p>`;
-    finalizar(false);
-}
-
-function finalizar(vitoria) {
-    document.getElementById('guessBtn').disabled = true;
-    nextBtn.style.display = "block";
-    suggestionList.style.display = "none";
-    audio.currentTime = tempoInicioAleatorio;
-    audio.play();
-}
-
-nextBtn.addEventListener('click', () => {
-    ronda++;
-    audio.pause();
-    configurarNovaRonda();
-});
-
-
-document.addEventListener('click', (e) => {
-    if (!guessInput.contains(e.target)) suggestionList.style.display = "none";
-});
+checkAuth();
 
 async function login() {
     const username = document.getElementById('loginUser').value;
@@ -478,8 +356,8 @@ async function login() {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username, password})
     });
-    if (res.ok) checkAuth();
-    else alert("Usuário ou senha errados!");
+    if (res.ok) window.location.reload();
+    else alert("Credenciais erradas!");
 }
 
 async function register() {
@@ -487,22 +365,169 @@ async function register() {
     formData.append('username', document.getElementById('regUser').value);
     formData.append('password', document.getElementById('regPass').value);
     formData.append('avatar', document.getElementById('regAvatar').files[0]);
-
+    
     const res = await fetch('/api/register', { method: 'POST', body: formData });
-    if (res.ok) {
-        alert("Conta criada! Faça login.");
-        toggleAuth();
-    } else alert("Erro ao registrar!");
+    if (res.ok) { alert("Conta criada!"); toggleAuth(); }
+    else alert("Erro ao criar conta!");
+}
+
+function toggleAuth() {
+    const l = document.getElementById('login-form');
+    const r = document.getElementById('register-form');
+    l.style.display = l.style.display === 'none' ? 'block' : 'none';
+    r.style.display = r.style.display === 'none' ? 'block' : 'none';
 }
 
 async function logout() {
     await fetch('/api/logout', { method: 'POST' });
-    location.reload();
+    window.location.reload();
 }
 
-function toggleAuth() {
-    const log = document.getElementById('login-form');
-    const reg = document.getElementById('register-form');
-    log.style.display = log.style.display === 'none' ? 'block' : 'none';
-    reg.style.display = reg.style.display === 'none' ? 'block' : 'none';
+// --- LÓGICA DE MULTIPLAYER ---
+
+function createRoom() { socket.emit('create_room', { username: myName }); }
+function joinRoom() { 
+    const code = document.getElementById('roomInput').value.toUpperCase();
+    socket.emit('join_room', { roomId: code, username: myName }); 
+}
+function startMultiGame() { socket.emit('start_game', currentRoom); }
+
+socket.on('room_created', id => {
+    currentRoom = id;
+    document.getElementById('displayRoomCode').innerText = id;
+    document.getElementById('waiting-room').style.display = 'block';
+    document.getElementById('p1').innerText = myName;
+});
+
+socket.on('player_joined', p => {
+    currentRoom = document.getElementById('displayRoomCode').innerText || currentRoom;
+    document.getElementById('waiting-room').style.display = 'block';
+    document.getElementById('p1').innerText = p[0].name;
+    document.getElementById('p2').innerText = p[1] ? p[1].name : "...";
+    if(p.length === 2 && p[0].id === socket.id) document.getElementById('startMultiBtn').style.display = 'block';
+});
+
+socket.on('new_round', data => {
+    isMulti = true;
+    ronda = data.ronda;
+    musicaAtual = playlist[data.index % playlist.length];
+    document.getElementById('multiplayer-lobby').style.display = 'none';
+    document.getElementById('multiplayer-chat').style.display = 'block';
+    document.getElementById('duel-score').style.display = 'flex';
+    document.getElementById('nameP1').innerText = document.getElementById('p1').innerText;
+    document.getElementById('nameP2').innerText = document.getElementById('p2').innerText;
+    resetRondaUI();
+});
+
+socket.on('update_scores', data => {
+    document.getElementById('scoreP1').innerText = data.players[0].score;
+    document.getElementById('scoreP2').innerText = data.players[1].score;
+    document.getElementById('feedback').innerHTML = `<p style="color:var(--primary)">${data.winner} foi mais rápido!</p>`;
+});
+
+socket.on('game_over', p => {
+    alert(`FIM DE JOGO!\n${p[0].name}: ${p[0].score}\n${p[1].name}: ${p[1].score}`);
+    window.location.reload();
+});
+
+// --- CHAT ---
+
+function sendChatMessage() {
+    const msg = document.getElementById('chatInput').value;
+    if(msg && currentRoom) {
+        socket.emit('send_msg', { roomId: currentRoom, user: myName, text: msg });
+        document.getElementById('chatInput').value = "";
+    }
+}
+socket.on('receive_msg', data => {
+    const logs = document.getElementById('chat-messages');
+    logs.innerHTML += `<p><b>${data.user}:</b> ${data.text}</p>`;
+    logs.scrollTop = logs.scrollHeight;
+});
+
+// --- GAMEPLAY CORE ---
+
+function configurarNovaRonda() {
+    musicaAtual = playlist[Math.floor(Math.random() * playlist.length)];
+    resetRondaUI();
+}
+
+function resetRondaUI() {
+    erros = 0; tempoLiberado = 3;
+    document.getElementById('roundCount').innerText = ronda;
+    document.getElementById('timerVal').innerText = "3s";
+    document.getElementById('feedback').innerHTML = "";
+    document.getElementById('guessInput').value = "";
+    document.getElementById('guessBtn').disabled = false;
+    document.getElementById('nextBtn').style.display = "none";
+    document.getElementById('roundProgressBar').style.width = (ronda * 10) + "%";
+    
+    audio.src = musicaAtual.arquivo;
+    audio.onloadedmetadata = () => {
+        tempoInicioAleatorio = Math.random() * (audio.duration - 15);
+    };
+}
+
+document.getElementById('playBtn').onclick = () => {
+    audio.currentTime = tempoInicioAleatorio;
+    audio.play();
+    document.getElementById('visualizer').classList.add('playing');
+    setTimeout(() => {
+        audio.pause();
+        document.getElementById('visualizer').classList.remove('playing');
+    }, tempoLiberado * 1000);
+};
+
+document.getElementById('guessInput').oninput = () => {
+    const termo = document.getElementById('guessInput').value.toLowerCase();
+    const list = document.getElementById('suggestionList');
+    list.innerHTML = "";
+    if (termo.length > 0) {
+        const filtradas = playlist.filter(m => m.nome.toLowerCase().includes(termo));
+        filtradas.slice(0, 5).forEach(m => {
+            const li = document.createElement('li');
+            li.textContent = m.nome;
+            li.onclick = () => { 
+                document.getElementById('guessInput').value = m.nome; 
+                list.style.display = "none"; 
+            };
+            list.appendChild(li);
+        });
+        list.style.display = filtradas.length ? "block" : "none";
+    } else { list.style.display = "none"; }
+};
+
+document.getElementById('guessBtn').onclick = () => {
+    const palpite = document.getElementById('guessInput').value.trim();
+    if (palpite.toLowerCase() === musicaAtual.nome.toLowerCase()) {
+        if (isMulti) socket.emit('correct_guess', { roomId: currentRoom });
+        else vencerSolo();
+    } else {
+        processarErro();
+    }
+};
+
+function vencerSolo() {
+    document.getElementById('feedback').innerHTML = "<p style='color:var(--primary)'>Acertaste!</p>";
+    document.getElementById('guessBtn').disabled = true;
+    if (ronda < 10) document.getElementById('nextBtn').style.display = "block";
+    else alert("Fim do desafio de 10 rondas!");
+}
+
+function proximaRondaSolo() {
+    ronda++;
+    configurarNovaRonda();
+}
+
+function processarErro() {
+    erros++;
+    if (erros < 4) {
+        tempoLiberado += 3;
+        document.getElementById('timerVal').innerText = tempoLiberado + "s";
+        document.getElementById('feedback').innerHTML = "<p style='color:#ffb142'>Errado! Mais tempo liberado.</p>";
+    } else {
+        document.getElementById('feedback').innerHTML = `<p style='color:#ff4d4d'>Perdeste! A música era: ${musicaAtual.nome}</p>`;
+        document.getElementById('guessBtn').disabled = true;
+        if (!isMulti) document.getElementById('nextBtn').style.display = "block";
+    }
 }

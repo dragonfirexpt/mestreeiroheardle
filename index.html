@@ -3,81 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mestre eiro</title>
+    <title>Mestre Eiro Heardle</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-<!-- Adicione antes do .game-card -->
-<div id="auth-container" class="auth-box">
-    <h2>Mestre Eiro Music</h2>
-    <div id="login-form">
-        <input type="text" id="loginUser" placeholder="Usuário">
-        <input type="password" id="loginPass" placeholder="Senha">
-        <button onclick="login()">Entrar</button>
-        <p>Não tem conta? <a href="#" onclick="toggleAuth()">Registrar</a></p>
-    </div>
-    
-    <div id="register-form" style="display:none;">
-        <input type="text" id="regUser" placeholder="Novo Usuário">
-        <input type="password" id="regPass" placeholder="Senha">
-        <label>Foto de Perfil:</label>
-        <input type="file" id="regAvatar" accept="image/*">
-        <button onclick="register()">Criar Conta</button>
-        <p>Já tem conta? <a href="#" onclick="toggleAuth()">Login</a></p>
-    </div>
-</div>
+    <div class="bg-glow"></div>
 
-<!-- Dentro do .game-card (Esconda-o por padrão) -->
-<div class="game-card" id="game-container" style="display: none;">
-    <div class="user-profile">
-        <img id="userAvatar" src="" alt="Avatar">
-        <span id="userName"></span>
-        <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
-    <!-- ... resto do seu jogo ... -->
-</div>
-    <div class="game-card">
-        <header>
-            <div class="score-badge">Ronda: <span id="roundCount">1</span></div>
-            <i class="fas fa-compact-disc disc-icon"></i>
-            <h1>Mestre eiro musicas</h1>
-        </header>
-
-        <div class="visualizer" id="visualizer">
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        </div>
-
-        <div class="controls">
-            <button id="playBtn" class="main-btn"><i class="fas fa-play"></i></button>
-            <p id="timerDisplay">Tempo: <span>3s</span></p>
-        </div>
-
-        <div class="search-container">
-            <div class="input-wrapper">
-                <input type="text" id="guessInput" placeholder="Nome da música..." autocomplete="off">
-                <ul id="suggestionList" class="dropdown"></ul>
+    <!-- BARRA SUPERIOR DE PERFIL -->
+    <nav id="main-nav" class="top-nav" style="display: none;">
+        <div class="user-profile">
+            <div class="avatar-circle">
+                <img id="userAvatar" src="" alt="P" onerror="this.src='/uploads/default-avatar.png'">
             </div>
-            <button id="guessBtn">Enviar</button>
+            <span id="userName">Carregando...</span>
         </div>
+        <div class="nav-logo">MESTRE EIRO</div>
+        <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+    </nav>
 
-        <div id="feedback"></div>
-        <button id="nextBtn" class="next-btn" style="display: none;">Próxima Música <i class="fas fa-forward"></i></button>
+    <main class="content">
+        <!-- TELA 1: LOGIN / REGISTRO -->
+        <section id="auth-screen" class="screen">
+            <div class="glass-card auth-box">
+                <i class="fas fa-compact-disc disc-hero"></i>
+                <h1>Mestre Eiro</h1>
+                
+                <div id="login-form">
+                    <div class="input-wrap">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="loginUser" placeholder="Utilizador">
+                    </div>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPass" placeholder="Palavra-passe">
+                    </div>
+                    <button onclick="login()" class="btn-primary">Entrar</button>
+                    <p class="switch-text">Não tens conta? <span onclick="toggleAuth()">Cria agora</span></p>
+                </div>
 
-        <div id="hintsSection" class="hints-container">
-            <h3>Dicas Desbloqueadas</h3>
-            <div id="hintsList"></div>
-        </div>
+                <div id="register-form" style="display: none;">
+                    <div class="input-wrap">
+                        <input type="text" id="regUser" placeholder="Novo nome">
+                    </div>
+                    <div class="input-wrap">
+                        <input type="password" id="regPass" placeholder="Senha segura">
+                    </div>
+                    <div class="file-wrap">
+                        <label for="regAvatar"><i class="fas fa-image"></i> Foto de Perfil</label>
+                        <input type="file" id="regAvatar" accept="image/*">
+                    </div>
+                    <button onclick="register()" class="btn-primary">Criar Conta</button>
+                    <p class="switch-text">Já és mestre? <span onclick="toggleAuth()">Login</span></p>
+                </div>
+            </div>
+        </section>
 
-        <div class="playlist-stats">
-    <div class="stat-item">
-        <i class="fas fa-check-circle"></i> <span id="countLancadas">0</span> Lançadas
-    </div>
-    <div class="stat-item">
-        <i class="fas fa-times-circle"></i> <span id="countNaoLancadas">0</span> Não Lançadas
-    </div>
-</div>
-    </div>
+        <!-- TELA 2: JOGO PRINCIPAL -->
+        <section id="game-screen" class="screen" style="display: none;">
+            
+            <!-- Lobby Multiplayer -->
+            <div id="multiplayer-lobby" class="glass-card lobby-box">
+                <h3>Duelo 1v1</h3>
+                <div class="lobby-btns">
+                    <button onclick="createRoom()" class="btn-glass">Criar Sala</button>
+                    <div class="join-row">
+                        <input type="text" id="roomInput" placeholder="CÓDIGO">
+                        <button onclick="joinRoom()" class="btn-primary-small">Entrar</button>
+                    </div>
+                </div>
+                
+                <div id="waiting-room" style="display:none">
+                    <div class="vs-view">
+                        <div class="p-name" id="p1">...</div>
+                        <div class="vs-badge">VS</div>
+                        <div class="p-name" id="p2">...</div>
+                    </div>
+                    <p class="code-tag">CÓDIGO: <span id="displayRoomCode"></span></p>
+                    <button id="startMultiBtn" onclick="startMultiGame()" class="btn-primary" style="display:none">COMEÇAR</button>
+                </div>
+            </div>
+
+            <!-- Card de Gameplay -->
+            <div class="glass-card game-card">
+                <!-- Placar Multiplayer -->
+                <div id="duel-score" class="score-grid" style="display: none;">
+                    <div class="s-card"><span id="nameP1"></span><br><b id="scoreP1">0</b></div>
+                    <div class="s-card"><span id="nameP2"></span><br><b id="scoreP2">0</b></div>
+                </div>
+
+                <div class="progress-bar-bg">
+                    <div id="roundProgressBar" class="progress-fill"></div>
+                </div>
+
+                <div class="game-meta">Ronda <span id="roundCount">1</span> / 10</div>
+                
+                <div id="visualizer" class="visualizer">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+
+                <div class="audio-box">
+                    <button id="playBtn" class="btn-play"><i class="fas fa-play"></i></button>
+                    <div class="timer">Tempo: <span id="timerVal">3s</span></div>
+                </div>
+
+                <div class="guess-box">
+                    <div class="search-wrap">
+                        <input type="text" id="guessInput" placeholder="Nome da música..." autocomplete="off">
+                        <ul id="suggestionList" class="drop-up"></ul>
+                    </div>
+                    <button id="guessBtn" class="btn-send"><i class="fas fa-paper-plane"></i></button>
+                </div>
+
+                <div id="feedback"></div>
+                <button id="nextBtn" onclick="proximaRondaSolo()" class="btn-primary" style="display:none">Próxima</button>
+            </div>
+
+            <!-- Chat -->
+            <div id="multiplayer-chat" class="glass-card chat-box" style="display: none;">
+                <div id="chat-messages" class="chat-logs"></div>
+                <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="Envia uma mensagem...">
+                    <button onclick="sendChatMessage()"><i class="fas fa-comment"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <audio id="audioPlayer"></audio>
     <script src="script.js"></script>
