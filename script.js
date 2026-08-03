@@ -433,14 +433,31 @@ socket.on('new_round', data => {
     document.getElementById('duel-score').style.display = 'flex';
     document.getElementById('nameP1').innerText = document.getElementById('p1').innerText;
     document.getElementById('nameP2').innerText = document.getElementById('p2').innerText;
-    
+    document.getElementById('guessBtn').disabled = false;
+    document.getElementById('guessInput').disabled = false;
+    document.getElementById('guessInput').value = "";
     resetRondaUI();
 });
 
 socket.on('update_scores', data => {
+    // 1. Desativar o botão de enviar de ambos os jogadores
+    document.getElementById('guessBtn').disabled = true;
+    document.getElementById('guessInput').disabled = true;
+
+    // 2. Atualizar placar visual
     document.getElementById('scoreP1').innerText = data.players[0].score;
     document.getElementById('scoreP2').innerText = data.players[1].score;
-    document.getElementById('feedback').innerHTML = `<p style="color:var(--primary)">${data.winner} acertou!</p>`;
+
+    // 3. Mostrar quem foi mais rápido
+    const feedback = document.getElementById('feedback');
+    if (data.winner === myName) {
+        feedback.innerHTML = `<p style="color:var(--primary); font-weight:800;">🔥 FOSTE MAIS RÁPIDO!</p>`;
+    } else {
+        feedback.innerHTML = `<p style="color:#ff4d4d; font-weight:800;">⌛ ${data.winner} acertou primeiro!</p>`;
+    }
+
+    // 4. Parar a música atual (opcional, para dar ênfase ao vencedor)
+    audio.pause();
 });
 
 socket.on('game_over', p => {

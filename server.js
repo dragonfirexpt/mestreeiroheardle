@@ -79,15 +79,16 @@ const rooms = {};
 
 io.on('connection', (socket) => {
     socket.on('create_room', (data) => {
-        const roomId = Math.random().toString(36).substring(2, 7).toUpperCase();
-        rooms[roomId] = {
-            players: [{ id: socket.id, name: data.username, score: 0 }],
-            rondaAtual: 1,
-            musicaIndex: null
-        };
-        socket.join(roomId);
-        socket.emit('room_created', roomId);
-    });
+    const roomId = Math.random().toString(36).substring(2, 7).toUpperCase();
+    rooms[roomId] = {
+        players: [{ id: socket.id, name: data.username, score: 0 }],
+        rondaAtual: 1,
+        musicaIndex: null,
+        locked: false // <--- ADICIONADO: Ronda começa destrancada
+    };
+    socket.join(roomId);
+    socket.emit('room_created', roomId);
+});
 
     socket.on('join_room', (data) => {
         const room = rooms[data.roomId];
@@ -108,28 +109,38 @@ io.on('connection', (socket) => {
         io.to(data.roomId).emit('receive_msg', data);
     });
 
-    socket.on('correct_guess', (data) => {
-        const room = rooms[data.roomId];
-        if (!room) return;
-        const player = room.players.find(p => p.id === socket.id);
-        player.score++;
+   socket.on('correct_guess', (data) => {
+    const room = rooms[data.roomId];
+    if (!room || room.locked) return; // <--- SE ESTIVER TRANCADA, IGNORE O ACERTO
+
+    // TRANCAR A RONDA IMEDIATAMENTE
+    room.locked = true;
+
+    const player = room.players.find(p => p.id === socket.id);
+    player.score++;
+    
+    if (room.rondaAtual >= 10) {
+        io.to(data.roomId).emit('game_over', room.players);
+        delete rooms[data.roomId];
+    } else {
+        room.rondaAtual++;
+        // Envia quem venceu para todos na sala
+        io.to(data.roomId).emit('update_scores', { 
+            winner: player.name, 
+            players: room.players 
+        });
         
-        if (room.rondaAtual >= 10) {
-            io.to(data.roomId).emit('game_over', room.players);
-            delete rooms[data.roomId];
-        } else {
-            room.rondaAtual++;
-            io.to(data.roomId).emit('update_scores', { winner: player.name, players: room.players });
-            setTimeout(() => enviarNovaRonda(data.roomId), 2500);
-        }
-    });
+        // Espera 2.5 segundos e manda a nova música (e destranca)
+        setTimeout(() => enviarNovaRonda(data.roomId), 2500);
+    }
+});
+
 
     function enviarNovaRonda(roomId) {
     const room = rooms[roomId];
     if (!room) return;
 
-    // Usamos um número grande e o cliente faz o % (resto da divisão) 
-    // com o tamanho da playlist dele. Assim nunca dá erro de "undefined"
+    room.locked = false; // <--- DESTRANCAR para a nova música
     room.musicaIndex = Math.floor(Math.random() * 1000); 
     
     io.to(roomId).emit('new_round', { 
