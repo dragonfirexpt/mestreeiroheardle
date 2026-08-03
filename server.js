@@ -2,14 +2,14 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// O Render define a porta automaticamente, se não houver, usa a 3000
 const PORT = process.env.PORT || 3000;
 
-// Serve os teus arquivos estáticos (html, css, js, musicas)
+// 1. Serve os arquivos estáticos primeiro
 app.use(express.static(path.join(__dirname, '.')));
 
-// Rota principal para carregar o jogo
-app.get('*', (req, res) => {
+// 2. Rota de captura (ajustada para a nova sintaxe)
+// Mudamos de '*' para '/*' ou usamos uma regex para evitar o erro do path-to-regexp
+app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
